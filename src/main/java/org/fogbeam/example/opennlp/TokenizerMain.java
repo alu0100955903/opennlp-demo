@@ -1,7 +1,8 @@
 
 package org.fogbeam.example.opennlp;
 
-
+import java.io.*;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,30 +18,48 @@ public class TokenizerMain
 	{
 		
 		// the provided model
-		// InputStream modelIn = new FileInputStream( "models/en-token.bin" );
+		//InputStream modelIn = new FileInputStream( "models/en-token.bin" );
 
 		
 		// the model we trained
 		InputStream modelIn = new FileInputStream( "models/en-token.model" );
 		
+		
+		//Esto es para escribir en el fichero
+		FileWriter fichero = null;
+		PrintWriter pw = null;
+		
 		try
 		{
+			
 			TokenizerModel model = new TokenizerModel( modelIn );
-		
 			Tokenizer tokenizer = new TokenizerME(model);
+
+			File archivoentrada = new File ("models/prueba.txt");
+			FileReader entry = new FileReader (archivoentrada);
+			BufferedReader buffer = new BufferedReader(entry);
 			
-				/* note what happens with the "three depending on which model you use */
-			String[] tokens = tokenizer.tokenize
-					(  "A ranger journeying with Oglethorpe, founder of the Georgia Colony, " 
-							+ " mentions \"three Mounts raised by the Indians over three of their Great Kings" 
-							+ " who were killed in the Wars.\"" );
+			String linea; 
+			String[] tokens=null;
 			
-			for( String token : tokens )
-			{
-				System.out.println( token );
-			}
-			
+			 fichero = new FileWriter("models/prueba2.txt");
+		     pw = new PrintWriter(fichero);
+		     
+		     
+			 while((linea=buffer.readLine())!=null) {
+		            tokens=tokenizer.tokenize(linea);
+		            
+		            
+			 }
+			 for( String token : tokens )
+				{
+					System.out.println( token );
+					pw.println(token); 			 //Esto es para escribir en el fichero
+				}
+		     
+			 
 		}
+		
 		catch( IOException e )
 		{
 			e.printStackTrace();
@@ -59,5 +78,21 @@ public class TokenizerMain
 			}
 		}
 		System.out.println( "\n-----\ndone" );
+		
+	  
+	    try
+	    {
+
+	    } catch (Exception e) {
+	            e.printStackTrace();
+	    } finally {
+	       try {
+	           if (null != fichero)
+	              fichero.close();
+	           } catch (Exception e2) {
+	              e2.printStackTrace();
+	           }
+	    }
+	    
 	}
 }
