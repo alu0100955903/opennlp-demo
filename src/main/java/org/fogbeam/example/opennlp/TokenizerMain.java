@@ -16,16 +16,21 @@ public class TokenizerMain
 {
 	public static void main( String[] args ) throws Exception
 	{
-		
+		/**
+		 * Este es el modulo que viene provisto
+		 */
 		// the provided model
 		//InputStream modelIn = new FileInputStream( "models/en-token.bin" );
 
-		
+		/**
+		 * Este es el modulo que viene entrenado
+		 */
 		// the model we trained
 		InputStream modelIn = new FileInputStream( "models/en-token.model" );
 		
-		
-		//Esto es para escribir en el fichero
+		/**
+		 * Declaramos un puntero a fichero para escribir
+		 */
 		FileWriter fichero = null;
 		PrintWriter pw = null;
 		
@@ -35,6 +40,9 @@ public class TokenizerMain
 			TokenizerModel model = new TokenizerModel( modelIn );
 			Tokenizer tokenizer = new TokenizerME(model);
 
+			/**
+			 * Indicamos el fichero de entrada de texto y lo cargamos en el buffer
+			 */
 			File archivoentrada = new File ("models/prueba.txt");
 			FileReader entry = new FileReader (archivoentrada);
 			BufferedReader buffer = new BufferedReader(entry);
@@ -42,19 +50,31 @@ public class TokenizerMain
 			String linea; 
 			String[] tokens=null;
 			
+			/**
+			 * fichero = new FileWriter("path to directory")
+			 * Declaramos un fichero que sera donde hagamos la salida por fichero de los tokens
+			 */
 			 fichero = new FileWriter("models/prueba2.txt");
 		     pw = new PrintWriter(fichero);
 		     
-		     
+		     /**
+		      * tokens=tokenizer.tokenize(linea)
+		      * Bucle para introducir cada palabra como un token
+		      */
 			 while((linea=buffer.readLine())!=null) {
 		            tokens=tokenizer.tokenize(linea);
 		            
 		            
 			 }
+			 
+			 /**
+			  * System.out.println para mostrar por terminal
+			  * pw.println(token) para escribir en el fichero
+			  */
 			 for( String token : tokens )
 				{
 					System.out.println( token );
-					pw.println(token); 			 //Esto es para escribir en el fichero
+					pw.println(token); 			
 				}
 		     
 			 
